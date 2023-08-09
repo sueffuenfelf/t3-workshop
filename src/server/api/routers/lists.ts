@@ -14,6 +14,9 @@ export const listsRouter = createTRPCRouter({
         data: {
           name: input.name,
           creatorId: ctx.session.user.id
+        },
+        include: {
+          creator: true
         }
       });
     }),
@@ -29,6 +32,11 @@ export const listsRouter = createTRPCRouter({
       });
     }),
   getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.list.findMany();
+    return ctx.prisma.list.findMany({
+      include: {
+        creator: true,
+        items: true
+      }
+    });
   })
 });
