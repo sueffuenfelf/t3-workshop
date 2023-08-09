@@ -7,7 +7,10 @@ import { api } from "~/utils/api";
 export default function Home() {
   const { data: session, status } = useSession();
   const createListMutation = api.lists.create.useMutation();
-  const listsQuery = api.lists.getAll.useQuery();
+  // disable the query if the user is not logged in
+  const listsQuery = api.lists.getAll.useQuery(undefined, {
+    enabled: !!session,
+  });
 
   return (
     <>
