@@ -38,5 +38,20 @@ export const listsRouter = createTRPCRouter({
         items: true
       }
     });
-  })
+  }),
+  getOne: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+    }))
+    .query(({ ctx, input }) => {
+      return ctx.prisma.list.findUnique({
+        where: {
+          id: input.id
+        },
+        include: {
+          creator: true,
+          items: true
+        }
+      });
+    }),
 });

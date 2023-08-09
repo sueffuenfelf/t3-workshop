@@ -5,6 +5,21 @@ import {
 } from "~/server/api/trpc";
 
 export const itemsRouter = createTRPCRouter({
+  toggleDone: protectedProcedure
+    .input(z.object({
+      id: z.string(),
+      done: z.boolean()
+    }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.item.update({
+        where: {
+          id: input.id
+        },
+        data: {
+          done: input.done
+        }
+      });
+    }),
   create: protectedProcedure
     .input(z.object({
       name: z.string(),
