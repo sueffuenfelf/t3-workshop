@@ -1,8 +1,9 @@
 import { Fragment, type ReactNode } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, BellIcon, UserIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { classNames } from "~/utils";
 import { signIn, signOut, useSession } from "next-auth/react";
+import Button from "../buttons/Button";
 
 
 type DashboardProps = {
@@ -134,7 +135,18 @@ export default function Dashboard(props: DashboardProps) {
         <main className="-mt-32">
           <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8">
             <div className="rounded-lg bg-white px-5 py-6 shadow sm:px-6">
-              {props.children}
+              {!session ? (
+                <div>
+                  <h1>Bitte logge dich ein.</h1>
+                  <Button
+                    onClick={() => signIn('google')}
+                    icon={UserIcon}
+                    label="Login mit Google"
+                  />
+                </div>
+              ) : (
+                props.children
+              )}
             </div>
           </div>
         </main>
